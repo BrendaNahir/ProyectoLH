@@ -1,7 +1,3 @@
-# Mi-Branch 2
+# Rama principal de Nahir
 
-prueba de branches 2
-
-seguramente siga la prueba
-
-pero sin nada mas
+Bla bla bla

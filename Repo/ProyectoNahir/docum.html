@@ -1,0 +1,31 @@
+```
+colors = {
+    'procedimientos': '#cd5c5c',
+    'cuerpos': '#99ccff',
+    'afecciones': '#ffa500'
+}
+name_base = 'dataset_lesiones/lesiones_{}.html'.format
+for i, caso in tqdm(enumerate(informes.iterrows())):
+    if i % 100 == 0:
+        print(name)
+        name = name_base(i // 100)
+    with open(name, 'a') as f:
+        body = f'''
+        <h1>Expediente: {caso[1].expediente}</h1>
+        <h3>Carátula: {caso[1].caratula}</h3>
+        <h3>Descripción: {caso[1].descripcion}</h3>
+        <span style="background-color: {colors["procedimientos"]}"><b>procedimientos terapeuticos o diagnosticos</b></span>
+        <span style="background-color: {colors["cuerpos"]}"><b>partes del cuerpo</b></span>
+        <span style="background-color: {colors["afecciones"]}"><b>patologías</b></span>
+        <p>
+        {general(caso[1].conclusiones, bert=True)}
+        </p>
+        <br>
+        '''
+        for lesion_name, lesiones in caso[1].lesiones.items():
+            for lesion in lesiones:
+                if len(remove_stops(lesion)) > 2 and lesion_name != 'lesiones':
+                    body = body.replace(
+                        general(' '+lesion, bert=True), f'<span style="background-color: {colors[lesion_name]}">{lesion}</span>')
+        f.write(body)
+```
